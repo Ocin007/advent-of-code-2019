@@ -1,0 +1,1 @@
+Create directories ("01", "02" etc) and put your input files there
