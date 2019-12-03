@@ -14,11 +14,28 @@ public class Main {
             System.exit(-1);
         }
 
+        //part 1
         int result = input.stream()
                 .map(mass -> (mass / 3) - 2)
                 .reduce(0, (mass1, mass2) -> mass1 + mass2);
 
-        System.out.println("Result is: "+result);
+        System.out.println("(part 1) Result is: "+result);
+
+        //part 2
+        int result2 = input.stream()
+                .map(mass -> {
+                    int resultMass = 0;
+                    while (mass > 0) {
+                        mass = (mass / 3) - 2;
+                        if(mass > 0) {
+                            resultMass += mass;
+                        }
+                    }
+                    return resultMass;
+                })
+                .reduce(0, (mass1, mass2) -> mass1 + mass2);
+
+        System.out.println("(part 2) Result is: "+result2);
     }
 
     private static ArrayList<Integer> getInput() {
