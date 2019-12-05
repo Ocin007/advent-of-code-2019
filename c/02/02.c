@@ -2,56 +2,18 @@
 #include <zconf.h>
 #include <stdlib.h>
 #include "02.h"
+#include "02helper.h"
 
 void run02() {
-    printf("Run advent of code day 2\n");
-    int i, j;
+    printf("Run advent of code day 2 (part 1)\n");
     int stmtList[145];
-
-    //create path to input file
-    char currentDirPath[PATH_MAX];
-    getcwd(currentDirPath, sizeof(currentDirPath));
-    char inputPath[] = "\\..\\..\\input\\02\\input.txt";
-    for(i=0; currentDirPath[i] != '\0'; i++) {}
-    for(j=0; j < 26 && i < PATH_MAX; j++) {
-        currentDirPath[i] = inputPath[j];
-        i++;
-    }
-
-    //read input file, prepare the program as int[]
-    FILE *inputfile = fopen(currentDirPath, "r");
-    char fileContent[381];
-    fgets(fileContent, 381, inputfile);
-    fclose(inputfile);
-    writeToIntArray(fileContent, 381, stmtList);
+    getInput(stmtList);
 
     stmtList[1] = 12;
     stmtList[2] = 2;
     runProgram(stmtList);
     printf("Result (position 0) is: %d\n", stmtList[0]);
     printf("Done!\n");
-}
-
-/**
- * writes src (e.g. 1,2,3,10,5,...) into dest
- * @param src
- * @param sizeSrc
- * @param dest
- */
-void writeToIntArray(char *src, int sizeSrc, int *dest) {
-    char helper[4];
-    int h = 0, d = 0;
-    for (int i = 0; i < sizeSrc; ++i) {
-        if(src[i] != ',' && src[i] != '\0') {
-            helper[h] = src[i];
-            h++;
-        } else {
-            helper[h] = '\0';
-            dest[d] = atoi(helper);
-            h = 0;
-            d++;
-        }
-    }
 }
 
 /**
