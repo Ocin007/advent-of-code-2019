@@ -20,5 +20,6 @@ void addProducts(struct product dest[PRODUCT_LIST_SIZE], struct product add[PROD
 void executeMultiply(int pc, struct product productList[][PRODUCT_LIST_SIZE]);
 void printPolynom(struct product polynom[PRODUCT_LIST_SIZE]);
 void printVariable(enum variable var, int value);
+int solveEquivalence(struct product productList[][PRODUCT_LIST_SIZE], int right, enum variable var, int value);
 
 #endif
