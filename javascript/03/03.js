@@ -56,22 +56,65 @@ var prepareCurrentLine = function (currentLine, wireElement) {
     }
 };
 
-var lowestDistance = null;
-var currentLine1 = {x1: 0, y1: 0, x2: 0, y2: 0};
-for (var i = 0; i < wire1.length; i++) {
-    prepareCurrentLine(currentLine1, wire1[i]);
-    var currentLine2 = {x1: 0, y1: 0, x2: 0, y2: 0};
-    for (var j = 0; j < wire2.length; j++) {
-        prepareCurrentLine(currentLine2, wire2[j]);
-        var intersection = getIntersection(currentLine1, currentLine2);
-        if(intersection !== false) {
-            var distance = (intersection.x < 0) ? intersection.x * -1 : intersection.x;
-            distance += (intersection.y < 0) ? intersection.y * -1 : intersection.y;
-            if(!lowestDistance || distance < lowestDistance) {
-                lowestDistance = distance;
+//part 1
+var part1 = function () {
+    var lowestDistance = null;
+    var currentLine1 = {x1: 0, y1: 0, x2: 0, y2: 0};
+    for (var i = 0; i < wire1.length; i++) {
+        prepareCurrentLine(currentLine1, wire1[i]);
+        var currentLine2 = {x1: 0, y1: 0, x2: 0, y2: 0};
+        for (var j = 0; j < wire2.length; j++) {
+            prepareCurrentLine(currentLine2, wire2[j]);
+            var intersection = getIntersection(currentLine1, currentLine2);
+            if(intersection !== false) {
+                var distance = (intersection.x < 0) ? intersection.x * -1 : intersection.x;
+                distance += (intersection.y < 0) ? intersection.y * -1 : intersection.y;
+                if(!lowestDistance || distance < lowestDistance) {
+                    lowestDistance = distance;
+                }
             }
         }
     }
-}
+    console.log("The distance to the closest intersection is: " + lowestDistance);
+};
 
-console.log("The distance to the closest intersection is: " + lowestDistance);
+var getStepsForLine = function (currentLine, intersection) {
+    var steps;
+    if(currentLine.x1 === currentLine.x2) {
+        steps = currentLine.y1 - intersection.y;
+    } else {
+        steps = currentLine.x1 - intersection.x;
+    }
+    steps *= (steps < 0) ? -1 : 1;
+    return steps;
+};
+
+//part 2
+var part2 = function () {
+    var fewestCombinedSteps = null;
+    var currentLine1 = {x1: 0, y1: 0, x2: 0, y2: 0};
+    var stepsWire1 = 0;
+    for (var i = 0; i < wire1.length; i++) {
+        prepareCurrentLine(currentLine1, wire1[i]);
+        var currentLine2 = {x1: 0, y1: 0, x2: 0, y2: 0};
+        var stepsWire2 = 0;
+        for (var j = 0; j < wire2.length; j++) {
+            prepareCurrentLine(currentLine2, wire2[j]);
+            var intersection = getIntersection(currentLine1, currentLine2);
+            if(intersection !== false) {
+                var stepsLine1 = getStepsForLine(currentLine1, intersection);
+                var stepsLine2 = getStepsForLine(currentLine2, intersection);
+                var combinedSteps = stepsWire1 + stepsLine1 + stepsWire2 + stepsLine2;
+                if(!fewestCombinedSteps || combinedSteps < fewestCombinedSteps) {
+                    fewestCombinedSteps = combinedSteps;
+                }
+            }
+            stepsWire2 += wire2[j].distance;
+        }
+        stepsWire1 += wire1[i].distance;
+    }
+    console.log("The fewest steps to an intersection is: " + fewestCombinedSteps);
+};
+
+part1();
+part2();
